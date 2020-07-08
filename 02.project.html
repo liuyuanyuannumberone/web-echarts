@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+
+设计稿：1920px
+屏幕分辨率:屏幕分辨率是1024×768，也就是说设备屏幕的水平方向上有1024个像素点，垂直方向上有768个像素点。
+像素的大小是没有固定长度的，不同设备上一个单位像素色块的大小是不一样的。
+rem并非是完美的适配方案，使用了rem，最后渲染时还是转换成px，这时小数部分就四舍五入
+-->
+<head>
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1,
+    maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>可视化项目</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/index.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/flexible.js"></script>
+    <!--根据浏览器窗口的大小自动计算根元素的px-->
+    <!--建议对于js做内联处理，在所有资源加载之前执行这个js-->
+    <!--之后页面中的元素，都可以用rem单位来设置。html上的font-size就是rem的基准像素。-->
+    <script src="js/echarts.min.js"></script>
+</head>
+
+<style>
+    /*屏幕在10245-1920有适配--解决方案媒体查询*/
+    @media screen and (max-width: 1024px) {
+        /*<=1024px fontSize=1024/24*/
+        html {
+            font-size: 42.66px !important;
+        }
+    }
+
+    @media screen and (min-width: 1920px) {
+        /*>=1024px fontSize=1920/24*/
+        html {
+            font-size: 80px !important;
+        }
+    }
+</style>
+
+<body>
+
+</body>
+</html>
