@@ -28,6 +28,21 @@ time, mark, audio, video {
     font: inherit;
     vertical-align: baseline;
 }
+html, .font-compatibility {
+    /*兼容所有平台字体*/
+    font-family: Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "冬青黑体",
+    "Heiti SC", "黑体-简",
+    STXihei, "华文细黑", "Microsoft YaHei", "微软雅黑", SimHei, "黑体", "WenQuanYi Micro Hei", "文泉驿微米黑",
+    sans-serif;
+}
+
+/* 如果你的项目仅支持 IE9+ | Chrome | Firefox 等，推荐在 <html> 中添加 .borderbox 这个 class */
+/*border-box*/
+*, html.borderbox *, html.borderbox *:before, html.borderbox *:after {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
 
 html, body {
     width: 100%;
@@ -53,8 +68,13 @@ table {
 }
 
 /* 去除默认边框 */
-fieldset, img {
+fieldset {
     border: 0;
+}
+/*图片没有边框  去掉图片底侧的空白缝隙*/
+img {
+    border: 0; /*ie6*/
+    vertical-align: middle;
 }
 
 /* 一致的 del 样式 */
@@ -94,29 +114,19 @@ q:before, q:after {
     content: none;
 }
 
-
-i {
+/*让所有斜体 不倾斜*/
+em,i {
     font-style: normal;
 }
-
+/*取消链接的下划线*/
 ins, a {
     text-decoration: none;
 }
-
-html, .font-compatibility {
-    /*兼容所有平台字体*/
-    font-family: Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "冬青黑体",
-    "Heiti SC", "黑体-简",
-    STXihei, "华文细黑", "Microsoft YaHei", "微软雅黑", SimHei, "黑体", "WenQuanYi Micro Hei", "文泉驿微米黑",
-    sans-serif;
+/*让button 按钮 变成小手*/
+button {
+    cursor: pointer;
 }
 
-/* 如果你的项目仅支持 IE9+ | Chrome | Firefox 等，推荐在 <html> 中添加 .borderbox 这个 class */
-*, html.borderbox *, html.borderbox *:before, html.borderbox *:after {
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-}
 
 
 
