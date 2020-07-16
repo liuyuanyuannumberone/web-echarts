@@ -1,7 +1,6 @@
 .idea/
 .git
 dist/
-out/
 node_modules/
-before/
-china-demo/
+
+
