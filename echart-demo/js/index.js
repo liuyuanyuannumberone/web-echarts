@@ -25,6 +25,7 @@
 })();
 
 // 点位分布统计模块
+//扇形图
 (function () {
     let myChart = echarts.init(document.querySelector(".pie"));
     let option = {
@@ -83,6 +84,7 @@
         myChart.resize();
     });
 })();
+
 // 柱形图模块
 (function () {
     let item = {
@@ -225,7 +227,7 @@
     });
 })();
 
-// 销售统计模块
+// 折线图
 (function () {
     // (1)准备数据
     var data = {
