@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../../js/map/echarts.min.js"></script>
+    <script src="../../js/map/china.js"></script>
+</head>
+<body style="height:100%;">
+<div id="main" style="width:100%;height:100vh;"></div>
+</body>
+<script>
+    /*https://www.cnblogs.com/yaomengli/p/8963575.html*/
+    let dataRel = [
+        {
+            name: '南京',
+            id:1,
+            draggable: true, // 是否可以拖拽，默认false
+            category: 0, // 这是种类，运维1测试2应用3实施4开发5
+            number: 0, // 这是编号 非必须，目的仅为方便编写line
+            value: 100, //图形大小
+        },
+
+
+        {
+            name: '出发时间',
+            id:2,
+            number: 1,
+            category: 3,
+            draggable: true,
+            value: 80,
+            label:'2020年9月1日',
+        },
+
+        {
+            name: '通联行为',
+            id:3,
+            number: 2,
+            category: 2,
+            draggable: true,
+            value: 80,
+        },
+        {
+            name: '餐饮住宿1',
+            id:5,
+            number: 3,
+            category: 1,
+            draggable: true,
+            value: 80,
+        },
+        {
+            name: '餐饮11',
+            id:6,
+            number: 4,
+            category: 5,
+            draggable: true,
+            value: 45,
+        },
+        {
+            name: '餐饮22',
+            number: 5,
+            id:7,
+            category: 5,
+            draggable: true,
+            value: 45,
+        },
+        {
+            name: '杭州',
+            id:4,
+            number: 6,
+            category: 0,
+            draggable: true,
+            value: 100,
+        },
+        {
+            name: '通联行为',
+            id:8,
+            number: 7,
+            category: 2,
+            draggable: true,
+            value: 80,
+        },
+        {
+            name: '餐饮住宿2',
+            id:10,
+            number: 8,
+            category: 1,
+            draggable: true,
+            value: 80,
+        },
+        {
+            name: '餐饮222',
+            id:11,
+            number: 9,
+            category: 5,
+            draggable: true,
+            value: 45,
+        },
+        {
+            name: '餐饮111',
+            id:12,
+            number: 10,
+            category: 5,
+            draggable: true,
+            value: 45,
+        },
+        {
+            name: '到达时间',
+            id:13,
+            number: 11,
+            category: 4,
+            draggable: true,
+            value: 80,
+            label:'2020年10月1日',
+        },
+        {
+            name: '其他行为',
+            id:14,
+            number: 12,
+            category: 6,
+            draggable: true,
+            value: 80,
+            label:'',
+        },
+    ];
+    let dataLink = [
+        // {
+        //     source: 0, // 可以用name 可以用number，但name不能重名
+        //     target: 1,
+        //     value: ''
+        // },
+        {
+            source: 0, // 可以用name 可以用number，但name不能重名
+            target: 2,
+            value: ''
+        }, {
+            source: 0, // 可以用name 可以用number，但name不能重名
+            target: 3,
+            value: ''
+        }, {
+            source: 3, // 可以用name 可以用number，但name不能重名
+            target: 4,
+            value: ''
+        }, {
+            source: 3, // 可以用name 可以用number，但name不能重名
+            target: 5,
+            value: ''
+        }, {
+            source: 0, // 可以用name 可以用number，但name不能重名
+            target: 6,
+            value: '飞机'
+        }, {
+            source: 6, // 可以用name 可以用number，但name不能重名
+            target: 7,
+            value: ''
+        }, {
+            source: 6, // 可以用name 可以用number，但name不能重名
+            target: 8,
+            value: ''
+        }, {
+            source: 6, // 可以用name 可以用number，但name不能重名
+            target: 11,
+            value: ''
+        }, {
+            source: 8,
+            target: 9,
+            value: ''
+        }, {
+            source: 8,
+            target: 10,
+            value: ''
+        },{
+            source: 0,
+            target: 12,
+            value: ''
+        }
+    ];
+    option = {
+        backgroundColor: "#fff",
+        title: {
+            text: '09229291919191',
+            left: 'center',
+            subtext: '2010-04-09至2020-09-02',
+        },
+        tooltip: { //悬浮显示
+            enterable:true,//鼠标是否可进入提示框浮层中
+            formatter: function (node) { // 区分连线和节点，节点上额外显示其他数字
+                // console.log(node.value);
+                if (!node.value) {
+                    return node.data.name;
+                } else {
+                    return node.data.name+":"+node.data.label?node.data.label:'';
+                }
+            },
+        },
+        animationDurationUpdate: 1500,
+        animationEasingUpdate: 'quinticInOut',
+        legend: {
+            x: "center",
+            show: true,
+            data: [] // 此处不显示根节点学生
+        },
+        series: [
+            {
+                type: 'graph',
+                layout: 'force',
+                symbolSize: function (size) {
+                    return size;
+                },
+                edgeSymbol: ['circle', 'arrow'],
+                edgeSymbolSize: [4, 10],
+                edgeLabel: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 10
+                        },
+                        formatter: "{c}"
+                    }
+                },
+                force: {
+                    repulsion: 1500,
+                    edgeLength: [50,100],
+                    gravity: 0.2,//节点受到的向中心的引力因子。该值越大节点越往中心点靠拢
+                    // 值最大的边长度会趋向于 10，值最小的边长度会趋向于 50
+                    layoutAnimation: true , //布局动画
+                },
+                focusNodeAdjacency: false,///是否在鼠标移到节点上的时候突出显示节点以及节点的边和邻接
+                roam: true,
+                categories: [{
+                    name: '位置',
+                    itemStyle: { // 可配置颜色
+                        normal: {
+                            color: "#8344ed",
+                        }
+                    }
+                }, {
+                    name: '餐饮住宿',
+                    itemStyle: { // 可配置颜色
+                        normal: {
+                            color: "#c23531",
+                        }
+                    }
+
+                }, {
+                    name: '通联行为',
+                    itemStyle: { // 可配置颜色
+                        normal: {
+                            color: "#3fa7dc",
+                        }
+                    }
+                }, {
+                    name: '出发时间',
+                    itemStyle: { // 可配置颜色
+                        normal: {
+                            color: "#ff891a",
+                        }
+                    }
+                }, {
+                    name: '到达时间',
+                    itemStyle: { // 可配置颜色
+                        normal: {
+                            color: "#334b5c",
+                        }
+                    }
+
+                }, {
+                    name: '其他',
+                    itemStyle: { // 可配置颜色
+                        normal: {
+                            color: "#54fd3c",
+                        }
+                    }
+
+                }, {
+                    name: '其他行为',
+                    itemStyle: { // 可配置颜色
+                        normal: {
+                            color: "#1c51ef",
+                        }
+                    }
+
+                }
+                ],
+                label: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 12
+                        },
+                    },
+                },
+
+                lineStyle: { //关系边的公用线条样式。
+                    normal: {
+                        opacity: 0.9,
+                        width: 1,
+                        curveness: 0.3,
+                        type : 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                        // color : 'rgba(255,0,255,0.4)',
+                    }
+                },
+                data: dataRel,
+                links: dataLink
+            }
+        ]
+    };
+    var chart = echarts.init(document.getElementById('main'));
+    chart.setOption(option);
+</script>
+</html>
