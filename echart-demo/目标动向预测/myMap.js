@@ -584,12 +584,8 @@
             {name: "西宁", value: 3, toInfo: {endTime: "2020-9-08 19:09"}},],
         [{name: "西安", fromInfo: {startTime: "2020-06-09 14:19", app: "携程", ticketType: 1}},
             {name: "拉萨", value: 4, toInfo: {endTime: "2020-9-08 23:56"}},],
-        [{name: "拉萨", fromInfo: {startTime: "2020-06-09 14:19", app: "携程", ticketType: 1}},
-            {name: "西安", value: 4, toInfo: {endTime: "2020-9-08 23:56"}},],
-        [{name: "拉萨", fromInfo: {startTime: "2020-06-09 14:20", app: "携程", ticketType: 1}},
-            {name: "西安", value: 4, toInfo: {endTime: "2020-9-08 23:56"}},],
-        [{name: "东莞", fromInfo: {startTime: "2020-06-09 14:19", app: "携程", ticketType: 1}},
-            {name: "东莞", value: 5, toInfo: {}}], //只有出发地，不知道目的地
+        [{name: "西安", fromInfo: {startTime: "2020-06-09 14:19", app: "携程", ticketType: 1}},
+            {name: "西安", value: 5, toInfo: {}}], //只有出发地，不知道目的地
     ];
     var railData = [
         [{name: "西宁"}, {name: "北京", value: 6}],
@@ -600,7 +596,6 @@
     ];
     let axiosData = [
         [planeData[0][0].name, planeData, "planePath"],
-
     ];
     var color = ["#a6c84c", "#ffa022", "#46bee9"]; //航线的颜色
     var series = [];
@@ -694,7 +689,8 @@
                 },
                 data: [{
                     name: item[0],
-                    value: mapgeoCoord(item[0])[0]
+                    value: mapgeoCoord(item[0])[0],
+                    data:convertData(item[1]),
                 }]
             },
             {
@@ -742,16 +738,18 @@
                 data: item[1].map(function (dataItem) {
                     return {
                         name: dataItem[1].name,
-                        value: mapgeoCoord(dataItem[1].name)[0].concat([dataItem[1].value])
+                        value: mapgeoCoord(dataItem[1].name)[0].concat([dataItem[1].value]),
+                        data:convertData(item[1]),
                     };
                 })
             },
         )
     });
-    console.log(series);
+    // console.log(series);
     let option = {
         tooltip: {
             trigger: "item",
+            // triggerOn:"click",
             showDelay: 0,                            //浮层显示的延迟，单位为 ms
             hideDelay: 100,                          //浮层隐藏的延迟，单位为 ms
             enterable: true,                        //鼠标是否可进入提示框浮层中
@@ -766,20 +764,25 @@
             padding: 2,                              //图例内边距，单位px  5  [5, 10]  [5,10,5,10]
             formatter: function (params, ticket, callback) {
                 if (params.seriesType == "effectScatter") {
-                    return params.data.name + "[" + params.data.value + "]";
-                } else if (params.seriesType == "lines") {
+                    console.log(params);
+                    let paramsData=params.data.data; //[]
+                    return `
+                    ${params.data.name}:${paramsData.length}条路线
+                    `
+                }
+                else if (params.seriesType == "lines") {
                     return (
                         `
-                     <span><i class="iconfont icon-chufadi fromplace"></i>${params.data.fromName}<span>
+                     <span><i class="iconfont icon-weizhi fromplace"></i>&nbsp;&nbsp;${params.data.fromName}<span>
                      <span><i class="iconfont icon-dao"></i></span>
-                    <span><i class="iconfont icon-chufadi toplace"></i>${params.data.toName}</span>
+                    <span><!--<i class="iconfont icon-chufadi toplace"></i>-->${params.data.toName}</span>
                         <br/>
                        
-              <span><i class="iconfont icon-chufashijian1 fromplace"></i>${params.data.fromInfo.startTime}</span>
+              <span><i class="iconfont icon-chufashijian1 toplace"></i>&nbsp;&nbsp;${params.data.fromInfo.startTime}</span>
                     -
-              <span><i class="iconfont icon-chufashijian1 toplace"></i>${params.data.toInfo.endTime}</span>
+              <span><!--<i class="iconfont icon-chufashijian1 toplace"></i>-->${params.data.toInfo.endTime}</span>
                           <br/>
-                           <span><i class="iconfont icon-app" style="color: #5eaaf7"></i>${params.data.fromInfo.app}</span>
+                           <span><i class="iconfont icon-app" style="color: #5eaaf7"></i>&nbsp;&nbsp;${params.data.fromInfo.app}</span>
                     `
                     );
                 } else {
