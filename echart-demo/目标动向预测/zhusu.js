@@ -475,9 +475,13 @@
         "上海": [121.4648, 31.2891],
         "重庆": [107.7539, 30.1904],
         "天津": [117.4219, 39.4189],
-    }; //"北京": [116.4551, 40.2539],
-    //  "上海": [121.4648, 31.2891], //     "重庆": [107.7539, 30.1904],
-    // "天津": [117.4219, 39.4189],
+    };
+    let hotelType = {
+        1: "餐饮预定",
+        2: "住宿预定",
+        3: "取消预定",
+    };
+
     function mapgeoCoord(name) {
         for (let item in geoCoordMap) {
             if (item.includes(name)) {
@@ -486,148 +490,26 @@
         }
     }
 
-    let planePath = "path://M1705.06,1318.313v-89.254l-319.9-221.799l0" +
-        ".073-208.063c0.521-84.662-26.629-121.796-63.961-121.491c-37." +
-        "332-0.305-64.482,36.829-63.961,121.491l0.073,208.063l-319.9,221." +
-        "799v89.254l330.343-157.288l12.238,241.308l-134.449,92.931l0.531,42." +
-        "034l175.125-42.917l175.125,42.917l0.531-42.034l-134.449-92.931l12.238-241." +
-        "308L1705.06,1318.313z";
-    let railPath = "path://M686.735518 722.820038l66.199549 0c76.068548 0 120.472394-45.033129 120.472394-120.498998L873.407461 120.472394c0-75.441311-44.108134-120.472394-120.174636-120.472394L271.294135 0c-76.002038 0-120.703643 45.031082-120.703643 120.472394l0 481.84967c0 75.465869 44.404869 120.498998 120.471371 120.498998l66.202618 0L30.117075 1023.766705l137.645169 0 0 0.233295L856.237756 1024l0-0.233295 137.644146 0L686.735518 722.820038zM718.051301 854.441485 305.945629 854.441485l24.045773-35.347287L694.005528 819.094199 718.051301 854.441485zM352.408203 786.14228l43.076724-63.322242 233.030147 0 43.075701 63.322242L352.408203 786.14228zM701.353302 685.935869c-28.350478 0-51.360749-23.610903-51.360749-52.7861 0-29.149617 23.01027-52.824983 51.360749-52.824983 28.348432 0 51.353586 23.675366 51.353586 52.824983C752.705865 662.324966 729.701734 685.935869 701.353302 685.935869zM374.303158 68.616405l275.404939 0c18.995138 0 34.41206 15.326878 34.41206 34.172625 0 18.858026-15.415899 34.127603-34.41206 34.127603L374.303158 136.916633c-19.007416 0-34.425362-15.268554-34.425362-34.127603C339.877797 83.943283 355.294719 68.616405 374.303158 68.616405zM271.06084 240.905905c0-37.703773 22.22955-60.197314 60.236197-60.197314l361.40388 0c38.00767 0 60.234151 22.492519 60.234151 60.197314l0 120.472394c0 37.736516-22.227504 60.275079-60.234151 60.275079L331.297037 421.653379c-38.00767 0-60.236197-22.538564-60.236197-60.275079L271.06084 240.905905zM322.703998 685.935869c-28.349455 0-51.287076-23.610903-51.287076-52.7861 0-29.149617 22.937621-52.824983 51.287076-52.824983s51.300378 23.675366 51.300378 52.824983C374.004377 662.324966 351.053453 685.935869 322.703998 685.935869zM283.538038 887.381125l456.920854 0 24.045773 35.347287-505.012401 0L283.538038 887.381125zM213.029691 991.02864l24.046797-35.349333 549.842931 0 24.046797 35.349333L213.029691 991.02864z"
-    let carPath = 'path://M49.592,40.883c-0.053,0.354-0.139,0.697-0.268,0.963c-0.232,0.475-0.455,0.519-1.334,0.475 c-1.135-0.053-2.764,0-4.484,0.068c0,0.476,0.018,0.697,0.018,0.697c0.111,1.299,0.697,1.342,0.931,1.342h3.7 c0.326,0,0.628,0,0.861-0.154c0.301-0.196,0.43-0.772,0.543-1.78c0.017-0.146,0.025-0.336,0.033-0.56v-0.01 c0-0.068,0.008-0.154,0.008-0.25V41.58l0,0C49.6,41.348,49.6,41.09,49.592,40.883L49.592,40.883z M6.057,40.883 c0.053,0.354,0.137,0.697,0.268,0.963c0.23,0.475,0.455,0.519,1.334,0.475c1.137-0.053,2.762,0,4.484,0.068 c0,0.476-0.018,0.697-0.018,0.697c-0.111,1.299-0.697,1.342-0.93,1.342h-3.7c-0.328,0-0.602,0-0.861-0.154 c-0.309-0.18-0.43-0.772-0.541-1.78c-0.018-0.146-0.027-0.336-0.035-0.56v-0.01c0-0.068-0.008-0.154-0.008-0.25V41.58l0,0 C6.057,41.348,6.057,41.09,6.057,40.883L6.057,40.883z M49.867,32.766c0-2.642-0.344-5.224-0.482-5.507 c-0.104-0.207-0.766-0.749-2.271-1.773c-1.522-1.042-1.487-0.887-1.766-1.566c0.25-0.078,0.492-0.224,0.639-0.241 c0.326-0.034,0.345,0.274,1.023,0.274c0.68,0,2.152-0.18,2.453-0.48c0.301-0.303,0.396-0.405,0.396-0.672 c0-0.268-0.156-0.818-0.447-1.146c-0.293-0.327-1.541-0.49-2.273-0.585c-0.729-0.095-0.834,0-1.022,0.121 c-0.304,0.189-0.32,1.919-0.32,1.919l-0.713,0.018c-0.465-1.146-1.11-3.452-2.117-5.269c-1.103-1.979-2.256-2.599-2.737-2.754 c-0.474-0.146-0.904-0.249-4.131-0.576c-3.298-0.344-5.922-0.388-8.262-0.388c-2.342,0-4.967,0.052-8.264,0.388 c-3.229,0.336-3.66,0.43-4.133,0.576s-1.633,0.775-2.736,2.754c-1.006,1.816-1.652,4.123-2.117,5.269L9.87,23.109 c0,0-0.008-1.729-0.318-1.919c-0.189-0.121-0.293-0.225-1.023-0.121c-0.732,0.104-1.98,0.258-2.273,0.585 c-0.293,0.327-0.447,0.878-0.447,1.146c0,0.267,0.094,0.379,0.396,0.672c0.301,0.301,1.773,0.48,2.453,0.48 c0.68,0,0.697-0.309,1.023-0.274c0.146,0.018,0.396,0.163,0.637,0.241c-0.283,0.68-0.24,0.524-1.764,1.566 c-1.506,1.033-2.178,1.566-2.271,1.773c-0.139,0.283-0.482,2.865-0.482,5.508s0.189,5.02,0.189,5.86c0,0.354,0,0.976,0.076,1.565 c0.053,0.354,0.129,0.697,0.268,0.966c0.232,0.473,0.447,0.516,1.334,0.473c1.137-0.051,2.779,0,4.477,0.07 c1.135,0.043,2.297,0.086,3.33,0.11c2.582,0.051,1.826-0.379,2.928-0.36c1.102,0.016,5.447,0.196,9.424,0.196 c3.976,0,8.332-0.182,9.423-0.196c1.102-0.019,0.346,0.411,2.926,0.36c1.033-0.018,2.195-0.067,3.332-0.11 c1.695-0.062,3.348-0.121,4.477-0.07c0.886,0.043,1.103,0,1.332-0.473c0.132-0.269,0.218-0.611,0.269-0.966 c0.086-0.592,0.078-1.213,0.078-1.565C49.678,37.793,49.867,35.408,49.867,32.766L49.867,32.766z M13.219,19.735 c0.412-0.964,1.652-2.9,2.256-3.244c0.145-0.087,1.426-0.491,4.637-0.706c2.953-0.198,6.217-0.276,7.73-0.276 c1.513,0,4.777,0.078,7.729,0.276c3.201,0.215,4.502,0.611,4.639,0.706c0.775,0.533,1.842,2.28,2.256,3.244 c0.412,0.965,0.965,2.858,0.861,3.116c-0.104,0.258,0.104,0.388-1.291,0.275c-1.387-0.103-10.088-0.216-14.185-0.216 c-4.088,0-12.789,0.113-14.184,0.216c-1.395,0.104-1.188-0.018-1.291-0.275C12.254,22.593,12.805,20.708,13.219,19.735 L13.219,19.735z M16.385,30.511c-0.619,0.155-0.988,0.491-1.764,0.482c-0.775,0-2.867-0.353-3.314-0.371 c-0.447-0.017-0.842,0.302-1.076,0.362c-0.23,0.06-0.688-0.104-1.377-0.318c-0.688-0.216-1.092-0.155-1.316-1.094 c-0.232-0.93,0-2.264,0-2.264c1.488-0.068,2.928,0.069,5.621,0.826c2.693,0.758,4.191,2.213,4.191,2.213 S17.004,30.357,16.385,30.511L16.385,30.511z M36.629,37.293c-1.23,0.164-6.386,0.207-8.794,0.207c-2.412,0-7.566-0.051-8.799-0.207 c-1.256-0.164-2.891-1.67-1.764-2.865c1.523-1.627,1.24-1.576,4.701-2.023C24.967,32.018,27.239,32,27.834,32 c0.584,0,2.865,0.025,5.859,0.404c3.461,0.447,3.178,0.396,4.699,2.022C39.521,35.623,37.887,37.129,36.629,37.293L36.629,37.293z  M48.129,29.582c-0.232,0.93-0.629,0.878-1.318,1.093c-0.688,0.216-1.145,0.371-1.377,0.319c-0.231-0.053-0.627-0.371-1.074-0.361 c-0.448,0.018-2.539,0.37-3.313,0.37c-0.772,0-1.146-0.328-1.764-0.481c-0.621-0.154-0.966-0.154-0.966-0.154 s1.49-1.464,4.191-2.213c2.693-0.758,4.131-0.895,5.621-0.826C48.129,27.309,48.361,28.643,48.129,29.582L48.129,29.582z';
-    let shipPath = 'path://M16.678,17.086h9.854l-2.703,5.912c5.596,2.428,11.155,5.575,16.711,8.607c3.387,1.847,6.967,3.75,10.541,5.375 v-6.16l-4.197-2.763v-5.318L33.064,12.197h-11.48L20.43,15.24h-4.533l-1.266,3.286l0.781,0.345L16.678,17.086z M49.6,31.84 l0.047,1.273L27.438,20.998l0.799-1.734L49.6,31.84z M33.031,15.1l12.889,8.82l0.027,0.769L32.551,16.1L33.031,15.1z M22.377,14.045 h9.846l-1.539,3.365l-2.287-1.498h1.371l0.721-1.352h-2.023l-0.553,1.037l-0.541-0.357h-0.34l0.359-0.684h-2.025l-0.361,0.684 h-3.473L22.377,14.045z M23.695,20.678l-0.004,0.004h0.004V20.678z M24.828,18.199h-2.031l-0.719,1.358h2.029L24.828,18.199z  M40.385,34.227c-12.85-7.009-25.729-14.667-38.971-12.527c1.26,8.809,9.08,16.201,8.213,24.328 c-0.553,4.062-3.111,0.828-3.303,7.137c15.799,0,32.379,0,48.166,0l0.066-4.195l1.477-7.23 C50.842,39.812,45.393,36.961,40.385,34.227z M13.99,35.954c-1.213,0-2.195-1.353-2.195-3.035c0-1.665,0.98-3.017,2.195-3.017 c1.219,0,2.195,1.352,2.195,3.017C16.186,34.604,15.213,35.954,13.99,35.954z M23.691,20.682h-2.02l-0.588,1.351h2.023 L23.691,20.682z M19.697,18.199l-0.721,1.358h2.025l0.727-1.358H19.697z';
-    let ways = {
-        planePath,
-        railPath,
-        carPath,
-        shipPath,
-    };
-    let ticketType = {
-        1: "订票",
-        2: "改签",
-        3: "退票",
-    };
-    //连接线上的数据
-    let convertData = function (data) {
-        let res = [];
-        for (let i = 0; i < data.length; i++) {
-            let dataItem = data[i];
-            let fromCoord = mapgeoCoord(dataItem[0].name)[0];  //
-            let toCoord = mapgeoCoord(dataItem[1].name)[0];  //
-            if (fromCoord && toCoord) {
-                res.push({
-                    fromName: dataItem[0].name,
-                    toName: dataItem[1].name,
-                    coords: [fromCoord, toCoord],
-                    value: dataItem[1].value,
-                    fromInfo: dataItem[0].fromInfo,
-                    // changeTicketInfo: dataItem[0].changeTicketInfo,
-                    toInfo: dataItem[1].toInfo,
-                });
-            }
-        }
-        return res;
-    };
-    //节点上的数据
-    let onlyFromPlaceInfo = [];
-    let selfFromData = function (data) {
-        //返回：只有出发地
-        for (let i=0;i<data.length;i++){
-            let dataItem=data[i];
-            if (dataItem[0].name === dataItem[1].name) {
-                onlyFromPlaceInfo.push({
-                    name:dataItem[0].name,
-                    fromInfo: dataItem[0].fromInfo,
-                })
-            }
-        }
-        console.log(onlyFromPlaceInfo,1111);
-        return onlyFromPlaceInfo;
-
-    };
-    let planeData = [
-        [{name: "西安", fromInfo: {startTime: "2020-06-09 12:30", app: "携程", ticketType: 1, count: 1}},//订票
-            {name: "北京", value: 1, toInfo: {endTime: "2020-9-08 15:34"}},],
-        [{name: "西安", fromInfo: {startTime: "2020-06-09 14:30", app: "携程", ticketType: 1, count: 2}},
-            {name: "上海", value: 2, toInfo: {endTime: "2020-9-08 16:23"}},],
-        [{
-            name: "西安", fromInfo: {startTime: "2020-06-09 08:23", app: "携程", ticketType: 2, count: 3},
-        }, {name: "西宁", value: 3, toInfo: {endTime: "2020-9-08 19:09"}},],
-        [{name: "西安", fromInfo: {startTime: "2020-06-09 14:19", app: "携程1", ticketType: 3, count: 4}},
-            {name: "拉萨", value: 4, toInfo: {endTime: "2020-9-08 23:56"}},],
-        [{name: "西安", fromInfo: {startTime: "2020-06-09 14:19", app: "携程1", ticketType: 3, count: 4}},
-            {name: "乌鲁木齐", value: 4, toInfo: {endTime: "2020-9-08 23:56"}},],
-        [{name: "西安", fromInfo: {startTime: "2020-06-09 14:19", app: "携程", ticketType: 1, count: 5}},
-            {name: "西安", value: 5, toInfo: {}}], //只有出发地
+    let axiosData = [["南京", {
+        stayTime: "2020-01-01", hotelName: "金陵饭店",
+        hotelAddress: "江苏省南京市鼓楼区云景路124号", app: "美团", seatNum: 13,
+        personCount: 2, name: ["张三", "李四"], hotelType: 1
+    }],
+        ["广州", {
+            stayTime: "2020-01-01", hotelName: "金陵饭店",
+            hotelAddress: "广东省广州市越秀区云语花园", app: "美团", seatNum: 13,
+            personCount: 2, name: ["李二", "李四"], hotelType: 2
+        }],
     ];
-    let railData = [
-        [{name: "东莞", fromInfo: {startTime: "2020-06-09 12:30", app: "携程", ticketType: 1, count: 4}},
-            {name: "东莞", value: 1, toInfo: {}}],
-    ];
-    let shipData = [
-        [{name: "西安", fromInfo: {startTime: "2020-06-09 12:30", app: "携程2", ticketType: 1, count: 4}},
-            {name: "乌鲁木齐", value: 1, toInfo: {endTime: "2020-9-08 23:56"}}],
-    ];
-    let axiosData = [
-        [planeData[0][0].name, planeData, "planePath"],
-        [railData[0][0].name, railData, "railPath"],  //只有出发地
-        [shipData[0][0].name, shipData, "shipPath"],  //去过两次
-    ];
-    var color = ["#a6c84c", "#ffa022", "#46bee9"]; //航线的颜色
     var series = [];
     axiosData.forEach(function (item, i) {
         series.push(
             {
-                name: mapgeoCoord(item[0])[1] + " Top1",
-                type: "lines",
-                zlevel: 1, //2 //zlevel大的Canvas会放在zlevel小的Canvas 的上面。
-                effect: {  //弧线情况
-                    show: true,
-                    period: 6,//6箭头指向速度，值越小速度越快
-                    trailLength: 0.7,  //特效尾迹长度[0,1]值越大，尾迹越长重
-                    color: "red", //arrow箭头的颜色
-                    symbolSize: 3
-                },
-                lineStyle: {
-                    normal: {
-                        color: color[Math.floor(Math.random() * (3))],
-                        width: 0,//尾迹线条宽度
-                        curveness: 0.2  //尾迹线条曲直度
-                    }
-                },
-                data: convertData(item[1])
-            },
-            {
-                name: mapgeoCoord(item[0])[1] + " Top2",
-                type: "lines",
-                zlevel: 2,
-                symbol: ["none", "arrow"],
-                symbolSize: 10,//10
-                effect: {
-                    show: true,
-                    period: 6,
-                    trailLength: 0,
-                    symbol: ways[item[2]],
-                    // symbol: planePath,
-                    symbolSize: 15//15
-                },
-                lineStyle: {
-                    normal: {
-                        color: color[Math.floor(Math.random() * (3))],
-                        width: 1,
-                        opacity: 0.6,
-                        curveness: 0.2
-                    }
-                },
-                data: convertData(item[1])
-            },
-            {
-                name: mapgeoCoord(item[0])[1] + "fromPlace",
+                name: mapgeoCoord(item[0])[1] + " toPlace",
                 type: "effectScatter",
                 coordinateSystem: "geo",
                 zlevel: 2,
                 rippleEffect: {
-                    // period: 3, //动画时间，值越小速度越快
-                    // scale: 3 //波纹圆环最大限制，值越大波纹越大
                     brushType: "stroke"
                 },
                 label: {
@@ -635,30 +517,16 @@
                         show: true,
                         position: "right",
                         formatter: "{b}",
-                        // formatter: function(params) { //圆环显示文字
-                        //     return params.data.name;
-                        // },
-                        // fontSize: 13,
-                        // color:"#f0f0f0"
                     },
-                    // emphasis: {
-                    //     show: true
-                    // }
                 },
-                // symbol: 'circle',
+                symbol: "circle",
                 symbolSize: function (val) {
-                    // console.log(val); [113.7964, 24.7028,10]
-                    // return val[2] / 8;
-                    // return 100 ;
                     return 100 / 8;
+
                 },
                 itemStyle: {
                     normal: {
-                        color: "#a6c84c",
-                        // color: color[0],
-                        // color: function(params) {
-                        //     return levelColorMap[params.value[2]];
-                        // },
+                        color: "#d4237a",
                     },
                     emphasis: {
                         areaColor: "#2B91B7"
@@ -667,65 +535,11 @@
                 data: [{
                     name: item[0],
                     value: mapgeoCoord(item[0])[0],
+                    info: item[1],
                 }]
-            },
-            //目的地
-            {
-                name: mapgeoCoord(item[0])[1] + " toPlace",
-                type: "effectScatter",
-                coordinateSystem: "geo",
-                zlevel: 2,
-                rippleEffect: {
-                    // period: 3, //动画时间，值越小速度越快
-                    // scale: 3 //波纹圆环最大限制，值越大波纹越大
-                    brushType: "stroke"
-                },
-                label: {
-                    normal: {
-                        show: true,
-                        position: "right",
-                        formatter: "{b}",
-                        // formatter: function(params) { //圆环显示文字
-                        //     return params.data.name;
-                        // },
-                        // fontSize: 13,
-                        // color:"#f0f0f0"
-                    },
-                    // emphasis: {
-                    //     show: true
-                    // }
-                },
-                symbol: 'circle',
-                symbolSize: function (val) {
-                    // console.log(val); [113.7964, 24.7028,10]
-                    // return val[2] / 8;
-                    // return 100 ;
-                    return 100 / 8;
-
-                },
-                itemStyle: {
-                    normal: {
-                        color: "#a6c84c",
-                        // color: color[0],
-                        // color: function(params) {
-                        //     return levelColorMap[params.value[2]];
-                        // },
-                    },
-                    emphasis: {
-                        areaColor: "#2B91B7"
-                    }
-                },
-                data: item[1].map(function (dataItem) {
-                    return {
-                        name: dataItem[1].name,
-                        value: mapgeoCoord(dataItem[1].name)[0].concat([dataItem[1].value]),
-                        // data: selfFromData(item[1]),
-                    };
-                })
             },
         )
     });
-    console.log(series);
     let option = {
         tooltip: {
             trigger: "item",
@@ -734,104 +548,25 @@
             hideDelay: 500,                          //浮层隐藏的延迟，单位为 ms
             enterable: true,                        //鼠标是否可进入提示框浮层中
             confine: true,                          //是否将 tooltip 框限制在图表的区域内
-            // position:['100%', '100%'],                //提示框浮层的位置，默认不设置时位置会跟随鼠标的位置,[10, 10],
-            // 回掉函数，inside鼠标所在图形的内部中心位置，top、left、bottom、right鼠标所在图形上侧，左侧，下侧，右侧，
-            // formatter:"{b0}: {c0}<br />{b1}: {c1}", //提示框浮层内容格式器，
-            // 支持字符串模板和回调函数两种形式,模板变量有 {a}, {b}，{c}，{d}，{e}，分别表示系列名，数据名，数据值等
-            // backgroundColor:"#fff",     //transparent     //标题背景色
             borderColor: "#ccc",                     //边框颜色
             borderWidth: 0,                          //边框线宽
             padding: 2,                              //图例内边距，单位px  5  [5, 10]  [5,10,5,10]
             formatter: function (params, ticket, callback) {
                 if (params.seriesType === "effectScatter") {
-                    // console.log(params);
                     return (
-                    `
-                         <span onclick="alert('展示信息')"  
-                   style="float: right;color: #66ff66;cursor: pointer;text-decoration: underline">
-          点击查看所有和<span>${params.data.name}</span>有关的出行、住宿信息</span>
-                    `
+                        `
+             <span><i class="iconfont icon-weizhi" style="color: #007d00"></i>${params.data.info.hotelAddress}</span><br>
+             <div style=""><span><i class="iconfont icon-chufashijian1 toplace" ></i>${params.data.info.stayTime}</span>
+             <span><i class="iconfont icon-zhusu" style="color: #efb454"></i>${params.data.info.hotelName}</span><br>
+             </div>
+          <span><i class="iconfont icon-app" style="color: #5eaaf7"></i>&nbsp;&nbsp;${params.data.info.app}</span>
+          <span><i class="iconfont icon-zuoweihao"></i>&nbsp;&nbsp;${params.data.info.seatNum}</span>
+          <span><i class="iconfont icon-renshu1"></i>&nbsp;&nbsp;${params.data.info.personCount}</span><br>
+          <span><i class="iconfont icon-renshu "></i>&nbsp;&nbsp;${params.data.info.name}</span>
+          <span>类型：${params.data.info.hotelType}</span>
+            
+                           `
                     )
-               /*     if(params.seriesName.includes("fromPlace")){
-                        console.log("fromPlace");
-                        /!*:${JSON.stringify(params.data.data)}*!/
-                        return `
-                    ${params.data.name}:${params.data.value}
-                    `
-                    }if(params.seriesName.includes("toPlace")){
-                        console.log("toPlace");
-                        return `
-                    ${params.data.name}:${params.data.value}
-                    `
-                    }*/
-
-                } else if (params.seriesType === "lines") {
-                    console.log(params);
-                    if (params.data.fromInfo.ticketType === 1) {
-                        //订票
-                        return (
-                            `    
-                   <span onclick="alert('去过多次(改签、订票、退票')"  
-                   style="float: right;color: #66ff66;cursor: pointer;text-decoration: underline">
-                  ${params.data.fromInfo.count}次</span>
-                       <span><i class="iconfont icon-minhangtongdingpiao" style="color: #66ff66;"></i></span>
-                     <span><!--<i class="iconfont icon-weizhi fromplace"></i>-->&nbsp;&nbsp;${params.data.fromName}<span>
-                     <span><i class="iconfont icon-dao"></i></span>
-                    <span><!--<i class="iconfont icon-chufadi toplace"></i>-->${params.data.toName}</span>
-                        <br/>
-                       
-              <span><i class="iconfont icon-chufashijian1 toplace"></i>&nbsp;&nbsp;${params.data.fromInfo.startTime}</span>
-                    -
-              <span><!--<i class="iconfont icon-chufashijian1 toplace"></i>-->${params.data.toInfo.endTime}</span>
-                          <br/>
-                           <span><i class="iconfont icon-app" style="color: #5eaaf7"></i>&nbsp;&nbsp;${params.data.fromInfo.app}</span>
-                        
-                    `
-                        );
-                    }
-                    else if (params.data.fromInfo.ticketType === 2) { //改签
-                        return (
-                            `
-<span onclick="alert('去过多次(改签、订票、退票')"  
-style="float: right;color: #66ff66;cursor: pointer;text-decoration: underline">
-                  ${params.data.fromInfo.count}次</span>
-                       <span><i class="iconfont icon-gaiqian" ></i></span>
-                     <span><!--<i class="iconfont icon-weizhi fromplace"></i>-->&nbsp;&nbsp;${params.data.fromName}<span>
-                     <span><i class="iconfont icon-dao"></i></span>
-                    <span><!--<i class="iconfont icon-chufadi toplace"></i>-->${params.data.toName}</span>
-                        <br/>
-                       
-              <span><i class="iconfont icon-chufashijian1 toplace"></i>&nbsp;&nbsp;${params.data.fromInfo.startTime}</span>
-                    -
-              <span><!--<i class="iconfont icon-chufashijian1 toplace"></i>-->${params.data.toInfo.endTime}</span>
-                          <br/>
-                           <span><i class="iconfont icon-app" style="color: #5eaaf7"></i>&nbsp;&nbsp;${params.data.fromInfo.app}</span>
-                    `
-                        );
-                    }
-                    else if (params.data.fromInfo.ticketType === 3) {
-                        //退票
-                        return (
-                            `
-<span onclick="alert('去过多次(改签、订票、退票')"  
-style="float: right;color: #66ff66;cursor: pointer;text-decoration: underline">
-                  ${params.data.fromInfo.count}次</span>
-                       <span><i class="iconfont icon-tuipiao" style="color: palevioletred;" ></i></span>
-                     <span><!--<i class="iconfont icon-weizhi fromplace"></i>-->&nbsp;&nbsp;${params.data.fromName}<span>
-                     <span><i class="iconfont icon-dao"></i></span>
-                    <span><!--<i class="iconfont icon-chufadi toplace"></i>-->${params.data.toName}</span>
-                        <br/>
-                       
-              <span><i class="iconfont icon-chufashijian1 toplace"></i>&nbsp;&nbsp;${params.data.fromInfo.startTime}</span>
-                    -
-              <span><!--<i class="iconfont icon-chufashijian1 toplace"></i>-->${params.data.toInfo.endTime}</span>
-                          <br/>
-                           <span><i class="iconfont icon-app" style="color: #5eaaf7"></i>&nbsp;&nbsp;${params.data.fromInfo.app}</span>
-                    `
-                        );
-                    }
-                } else {
-                    return params.name;
                 }
             }
         },
