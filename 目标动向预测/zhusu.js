@@ -493,12 +493,12 @@
     let axiosData = [["南京", {
         stayTime: "2020-01-01", hotelName: "金陵饭店",
         hotelAddress: "江苏省南京市鼓楼区云景路124号", app: "美团", seatNum: 13,
-        personCount: 2, name: ["张三", "李四"], hotelType: 1
+        personCount: 2, name: ["张三", "李四"], hotelType: hotelType[1]
     }],
         ["广州", {
             stayTime: "2020-01-01", hotelName: "金陵饭店",
             hotelAddress: "广东省广州市越秀区云语花园", app: "美团", seatNum: 13,
-            personCount: 2, name: ["李二", "李四"], hotelType: 2
+            personCount: 2, name: ["李二", "李四"], hotelType: hotelType[2]
         }],
     ];
     var series = [];
@@ -555,16 +555,21 @@
                 if (params.seriesType === "effectScatter") {
                     return (
                         `
-             <span><i class="iconfont icon-weizhi" style="color: #007d00"></i>${params.data.info.hotelAddress}</span><br>
-             <div style=""><span><i class="iconfont icon-chufashijian1 toplace" ></i>${params.data.info.stayTime}</span>
+        <span><i class="iconfont icon-weizhi" style="color: #007d00"></i>${params.data.info.hotelAddress}</span><br>
+             <div style="display: flex">
+             <span style="flex: 1"><i class="iconfont icon-chufashijian1 toplace" ></i>${params.data.info.stayTime}</span>
              <span><i class="iconfont icon-zhusu" style="color: #efb454"></i>${params.data.info.hotelName}</span><br>
              </div>
-          <span><i class="iconfont icon-app" style="color: #5eaaf7"></i>&nbsp;&nbsp;${params.data.info.app}</span>
-          <span><i class="iconfont icon-zuoweihao"></i>&nbsp;&nbsp;${params.data.info.seatNum}</span>
-          <span><i class="iconfont icon-renshu1"></i>&nbsp;&nbsp;${params.data.info.personCount}</span><br>
-          <span><i class="iconfont icon-renshu "></i>&nbsp;&nbsp;${params.data.info.name}</span>
+                   <div style="display: flex">
+                 
+          <span style="flex: 1"><i class="iconfont icon-app" style="color: #5eaaf7"></i>&nbsp;&nbsp;${params.data.info.app}</span>
+          <span style="flex: 1"><i class="iconfont icon-zuoweihao" style="color: #c1ffc1"></i>&nbsp;&nbsp;${params.data.info.seatNum}</span>
+          <span><i class="iconfont icon-renshu1" style="color: #c6e2ff"></i>&nbsp;&nbsp;${params.data.info.personCount}</span><br>
+             </div>
+                                <div style="display: flex">
+          <span style="flex: 1"><i class="iconfont icon-renshu " style="color: #996600"></i>&nbsp;&nbsp;${params.data.info.name}</span>
           <span>类型：${params.data.info.hotelType}</span>
-            
+            </div>
                            `
                     )
                 }

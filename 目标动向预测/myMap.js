@@ -564,8 +564,14 @@
             {name: "东莞", value: 1, toInfo: {}}],
     ];
     let shipData = [
-        [{name: "西安", fromInfo: {startTime: "2020-06-09 12:30", app: "携程2", ticketType: 1, count: 4}},
+        [{name: "成都", fromInfo: {startTime: "2020-06-09 12:30", app: "携程2", ticketType: 1, count: 4}},
             {name: "乌鲁木齐", value: 1, toInfo: {endTime: "2020-9-08 23:56"}}],
+        [{name: "成都", fromInfo: {startTime: "2020-06-09 12:30", app: "携程2", ticketType: 1, count: 4}},
+            {name: "北京", value: 1, toInfo: {endTime: "2020-9-08 23:56"}}],
+        [{name: "成都", fromInfo: {startTime: "2020-06-09 12:30", app: "携程2", ticketType: 1, count: 4}},
+            {name: "深圳", value: 1, toInfo: {endTime: "2020-9-08 23:56"}}],
+        [{name: "成都", fromInfo: {startTime: "2020-06-09 12:30", app: "携程2", ticketType: 1, count: 4}},
+            {name: "郴州", value: 1, toInfo: {endTime: "2020-9-08 23:56"}}],
     ];
     let axiosData = [
         [planeData[0][0].name, planeData, "planePath"],
